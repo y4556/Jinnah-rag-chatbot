@@ -1,0 +1,12 @@
+streamlit
+langchain
+chromadb
+pypdf
+unstructured[pdf]
+sentence-transformers
+ollama
+python-dotenv
+tiktoken
+pdf2image
+pytesseract
+pillow
