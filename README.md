@@ -18,9 +18,13 @@ A Streamlit-based Retrieval-Augmented Generation (RAG) chatbot that lets you que
 
 ---
 
-## 🏗 Architecture
+## 🏗 Flow Chart
 
-![Architecture Diagram](assets/images/Architecture.png)
+<p align="center">
+  <img src="assets/images/Architecture.png" 
+       alt="Floww Chart" 
+       width="300" />
+</p>
 
 1. **Backend Preparation**  
    - **PDF Documents** → Ingestion Script → Chunk Splitting → Vector Embeddings → ChromaDB Storage  
