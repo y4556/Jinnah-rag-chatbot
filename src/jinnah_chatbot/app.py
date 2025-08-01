@@ -7,7 +7,11 @@ import os
 import time
 from persona import jinnah_prompt, refine_jinnah_response
 from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K
-JINNAH_IMAGE_PATH = r"D:\red_buffer\VS Code\Jinnah_ChatBot\image\Jinnah.jpg"
+from pathlib import Path
+
+APP_DIR = Path(__file__).resolve().parent
+PROJECT_ROOT = APP_DIR.parent.parent
+JINNAH_IMAGE_PATH = PROJECT_ROOT / "image" / "Jinnah.jpg"
 
 # Configuration
 COLLECTION_NAME = "jinnah-443369fb"
