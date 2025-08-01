@@ -1,5 +1,5 @@
 streamlit
-langchain
+langchain 
 chromadb
 pypdf
 unstructured[pdf]
@@ -10,3 +10,6 @@ tiktoken
 pdf2image
 pytesseract
 pillow
+langchain-community
+langchain-openai
+langchain-groq  
