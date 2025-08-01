@@ -1,0 +1,10 @@
+services:
+  - type: web
+    name: jinnah-chatbot
+    env: python
+    plan: free
+    buildCommand: pip install -r requirements.txt
+    startCommand: streamlit run src/jinnah_chatbot/app.py
+    envVars:
+      - key: PYTHONPATH
+        value: src
