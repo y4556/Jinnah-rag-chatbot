@@ -8,11 +8,20 @@ import time
 from persona import jinnah_prompt, refine_jinnah_response
 from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K
 from pathlib import Path
+import logging
+
+logging.basicConfig(level=logging.INFO)
+logger = logging.getLogger(__name__)
+
+# LOG resolved paths
+logger.info(f"[CONFIG] EMBEDDING_MODEL: {EMBEDDING_MODEL}")
+logger.info(f"[CONFIG] GROQ_MODEL: {GROQ_MODEL}")
 
 APP_DIR = Path(__file__).resolve().parent
 PROJECT_ROOT = APP_DIR.parent.parent
 JINNAH_IMAGE_PATH = PROJECT_ROOT / "image" / "Jinnah.jpg"
-
+CHROMA_PATH = PROJECT_ROOT / "chroma_db"
+logger.info(f"[CONFIG] CHROMA_PATH: {CHROMA_PATH}")
 # Configuration
 COLLECTION_NAME = "jinnah-443369fb"
 
@@ -101,6 +110,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 
 # Initialize ChromaDB
 try:
+    logger.info(f"[CHROMA] Connecting to ChromaDB at: {CHROMA_PATH}")
     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
     embedding_model = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vector_db = Chroma(
@@ -109,18 +119,23 @@ try:
         embedding_function=embedding_model
     )
     chroma_status.success("✅ ChromaDB loaded")
+    logger.info("[CHROMA] ChromaDB successfully loaded")
 except Exception as e:
     chroma_status.error(f"❌ ChromaDB error: {str(e)}")
+    logger.exception("[CHROMA] Failed to connect to ChromaDB:")
     st.error(f"Failed to load ChromaDB: {str(e)}")
     st.stop()
 
 # Initialize Groq client
 try:
+    logger.info("[GROQ] Initializing Groq client...")
     groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
     groq_status.success("✅ Groq connected")
+    logger.info("[GROQ] Groq client connected successfully")
 except Exception as e:
     groq_status.error(f"❌ Groq error: {str(e)}")
     st.error(f"Failed to initialize Groq client: {str(e)}")
+    logger.exception("[GROQ] Failed to initialize Groq client:")
     st.stop()
 
 # Display chat history
