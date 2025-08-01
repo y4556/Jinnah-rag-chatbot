@@ -1,130 +1,3 @@
-# import streamlit as st
-# from langchain_community.vectorstores import Chroma
-# from langchain_community.embeddings import HuggingFaceEmbeddings
-# from langchain.chains import RetrievalQA
-# from langchain_community.llms import Ollama
-# from persona import jinnah_prompt, refine_jinnah_response
-# import chromadb
-
-# # Configuration
-# CHROMA_PATH = r"D:\red_buffer\VS Code\RAG\chroma_db"
-# COLLECTION_NAME = "jinnah-851ed167"
-# JINNAH_IMAGE_PATH = r"D:\red_buffer\VS Code\RAG\image\1710916-550194112.jpg"
-# OLLAMA_MODEL = "deepseek-r1:1.5b"
-
-# # Initialize session
-# if "messages" not in st.session_state:
-#     st.session_state.messages = []
-
-# # Streamlit setup
-# st.set_page_config(
-#     page_title="Dialogue with Quaid-e-Azam",
-#     page_icon="🇵🇰",
-#     layout="centered"
-# )
-
-# # Minimal styling
-# st.markdown("""
-# <style>
-#     .message-jinnah {
-#         background: #f0f8ff;
-#         border-radius: 10px;
-#         padding: 12px;
-#         margin: 8px 0;
-#         border-left: 4px solid #1e3a8a;
-#     }
-#     .message-user {
-#         background: #e6fffa;
-#         border-radius: 10px;
-#         padding: 12px;
-#         margin: 8px 0 8px auto;
-#         max-width: 80%;
-#         border-right: 4px solid #004d40;
-#     }
-# </style>
-# """, unsafe_allow_html=True)
-
-# # Load image
-# try:
-#     with open(JINNAH_IMAGE_PATH, 'rb') as f:
-#         st.sidebar.image(f.read(), width=200, caption="Muhammad Ali Jinnah")
-# except:
-#     st.sidebar.warning("Jinnah image not found")
-
-# # App title
-# st.title("Dialogue with Quaid-e-Azam")
-
-# # Initialize ChromaDB
-# try:
-#     chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
-#     embedding_model = HuggingFaceEmbeddings(model_name="sentence-transformers/all-MiniLM-L6-v2")
-#     vector_db = Chroma(
-#         client=chroma_client,
-#         collection_name=COLLECTION_NAME,
-#         embedding_function=embedding_model
-#     )
-# except Exception as e:
-#     st.error(f"Failed to load ChromaDB: {str(e)}")
-#     st.stop()
-
-# # Initialize Ollama with streaming
-# try:
-#     llm = Ollama(
-#         model=OLLAMA_MODEL,
-#         base_url="http://localhost:11434",
-#         temperature=0.1,
-#         callback_manager=None  # Disable default callbacks
-#     )
-# except Exception as e:
-#     st.error(f"Failed to load Ollama: {str(e)}")
-#     st.stop()
-
-# # Display chat history
-# for message in st.session_state.messages:
-#     with st.chat_message(message["role"]):
-#         st.markdown(f'<div class="message-{message["role"]}">{message["content"]}</div>', 
-#                    unsafe_allow_html=True)
-
-# # Chat input
-# if prompt := st.chat_input("Ask Quaid-e-Azam..."):
-#     # Add user message
-#     st.session_state.messages.append({"role": "user", "content": prompt})
-    
-#     # Display user message
-#     with st.chat_message("user"):
-#         st.markdown(f'<div class="message-user">{prompt}</div>', unsafe_allow_html=True)
-    
-#     # Generate response
-#     with st.chat_message("assistant"):
-#         # Create streaming response placeholder
-#         response_placeholder = st.empty()
-#         full_response = ""
-        
-#         # Directly stream from LLM
-#         try:
-#             qa = RetrievalQA.from_chain_type(
-#                 llm=llm,
-#                 chain_type="stuff",
-#                 retriever=vector_db.as_retriever(),
-#                 chain_type_kwargs={"prompt": jinnah_prompt}
-#             )
-            
-#             # Get streaming response
-#             for chunk in qa.stream({"query": prompt}):
-#                 if "result" in chunk:
-#                     refined = refine_jinnah_response(chunk["result"])
-#                     full_response += refined
-#                     response_placeholder.markdown(
-#                         f'<div class="message-jinnah">{full_response}</div>',
-#                         unsafe_allow_html=True
-#                     )
-                    
-#             # Add final response to history
-#             st.session_state.messages.append({"role": "assistant", "content": full_response})
-            
-#         except Exception as e:
-#             st.error(f"Error generating response: {str(e)}")
-
 import streamlit as st
 from langchain_community.vectorstores import Chroma
 from langchain_community.embeddings import HuggingFaceEmbeddings
@@ -133,10 +6,11 @@ from groq import Groq
 import os
 import time
 from persona import jinnah_prompt, refine_jinnah_response
-from config import CHROMA_PATH, JINNAH_IMAGE_PATH, EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K
+from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K
+JINNAH_IMAGE_PATH = r"D:\red_buffer\VS Code\Jinnah_ChatBot\image\Jinnah.jpg"
 
 # Configuration
-COLLECTION_NAME = "jinnah-851ed167"
+COLLECTION_NAME = "jinnah-443369fb"
 
 # Initialize session
 if "messages" not in st.session_state:
@@ -188,17 +62,27 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
-# Sidebar with image and status
+
 with st.sidebar:
     st.title("Quaid-e-Azam Chat")
-    if os.path.exists(JINNAH_IMAGE_PATH):
-        st.image(JINNAH_IMAGE_PATH, width=240, caption="Muhammad Ali Jinnah", use_container_width=True)
+
+    img_path = JINNAH_IMAGE_PATH
+
+    if os.path.exists(img_path):
+        # Read the file as bytes and display
+        with open(img_path, "rb") as f:
+            img_bytes = f.read()
+        st.image(
+            img_bytes,
+            width=240,
+            caption="Muhammad Ali Jinnah",
+            use_container_width=True,
+        )
     else:
-        st.warning(f"Image not found at:\n{JINNAH_IMAGE_PATH}")
+        st.warning(f"Jinnah image not found at:\n{img_path}")
 
     st.divider()
     st.subheader("System Status")
-    
     # Status indicators will be updated here
     chroma_status = st.empty()
     groq_status = st.empty()

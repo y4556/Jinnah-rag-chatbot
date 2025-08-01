@@ -24,7 +24,7 @@ def is_scanned_pdf(file_path):
         for page_num in range(len(doc)):
             page = doc.load_page(page_num)
             text = page.get_text()
-            if text.strip():  # If any text found, it's not scanned
+            if text.strip():  
                 return False
         return True
     except:
@@ -42,6 +42,7 @@ def process_pdfs():
     failed_files = []
     
     print("📂 Processing PDFs...")
+    print(DATA_DIR)
     
     files = [f for f in os.listdir(pdf_dir) if f.endswith(".pdf")]
     if not files:
