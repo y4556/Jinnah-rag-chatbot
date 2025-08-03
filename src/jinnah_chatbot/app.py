@@ -6,25 +6,15 @@ from groq import Groq
 import os
 import time
 from persona import jinnah_prompt, refine_jinnah_response
-from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K
+from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K,GROQ_API_KEY,JINNAH_IMAGE_PATH
 from pathlib import Path
 import logging
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
-
-# LOG resolved paths
-logger.info(f"[CONFIG] EMBEDDING_MODEL: {EMBEDDING_MODEL}")
-logger.info(f"[CONFIG] GROQ_MODEL: {GROQ_MODEL}")
-
-APP_DIR = Path(__file__).resolve().parent
-PROJECT_ROOT = APP_DIR.parent.parent
-JINNAH_IMAGE_PATH = PROJECT_ROOT / "image" / "Jinnah.jpg"
-CHROMA_PATH = PROJECT_ROOT / "chroma_db"
-logger.info(f"[CONFIG] CHROMA_PATH: {CHROMA_PATH}")
-# Configuration
 COLLECTION_NAME = "jinnah-443369fb"
-
+# CHROMA_PATH="D:\\red_buffer\\VS Code\\Jinnah_ChatBot\\chroma_db"
+# JINNAH_IMAGE_PATH="D:\\red_buffer\\VS Code\\Jinnah_ChatBot\\image\\Jinnah.jpg"
 # Initialize session
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -79,11 +69,11 @@ st.markdown("""
 with st.sidebar:
     st.title("Quaid-e-Azam Chat")
 
-    img_path = JINNAH_IMAGE_PATH
+    logger.info(f"jinnah path is: ", JINNAH_IMAGE_PATH)
 
-    if os.path.exists(img_path):
+    if os.path.exists(JINNAH_IMAGE_PATH):
         # Read the file as bytes and display
-        with open(img_path, "rb") as f:
+        with open(JINNAH_IMAGE_PATH, "rb") as f:
             img_bytes = f.read()
         st.image(
             img_bytes,
@@ -92,7 +82,7 @@ with st.sidebar:
             use_container_width=True,
         )
     else:
-        st.warning(f"Jinnah image not found at:\n{img_path}")
+        st.warning(f"Jinnah image not found at:\n{JINNAH_IMAGE_PATH}")
 
     st.divider()
     st.subheader("System Status")
@@ -118,6 +108,7 @@ try:
         collection_name=COLLECTION_NAME,
         embedding_function=embedding_model
     )
+    logger.info(f"chroma path is: ", CHROMA_PATH)
     chroma_status.success("✅ ChromaDB loaded")
     logger.info("[CHROMA] ChromaDB successfully loaded")
 except Exception as e:

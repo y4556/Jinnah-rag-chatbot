@@ -1,5 +1,5 @@
 from chromadb import PersistentClient
-db_path = r'D:\red_buffer\VS Code\RAG\chroma_db'
+db_path = r'D:\red_buffer\VS Code\Jinnah_ChatBot\chroma_db'
 
 # Initialize the PersistentClient with the path
 client = PersistentClient(path=db_path)
