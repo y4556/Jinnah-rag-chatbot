@@ -6,3 +6,4 @@ __pycache__/
 .vscode/
 .DS_Store
 data/
+src\jinnah_chatbot\test.py

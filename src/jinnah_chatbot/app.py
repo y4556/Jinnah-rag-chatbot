@@ -6,15 +6,17 @@ from groq import Groq
 import os
 import time
 from persona import jinnah_prompt, refine_jinnah_response
-from config import CHROMA_PATH,  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K,GROQ_API_KEY,JINNAH_IMAGE_PATH
+from config import  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIEVER_K,GROQ_API_KEY
 from pathlib import Path
 import logging
+
+ROOT = Path(__file__).resolve().parent.parent.parent    
+JINNAH_IMAGE_PATH = ROOT / "image" / "Jinnah.jpg"
+CHROMA_PATH = ROOT / "chroma_db"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 COLLECTION_NAME = "jinnah-443369fb"
-# CHROMA_PATH="D:\\red_buffer\\VS Code\\Jinnah_ChatBot\\chroma_db"
-# JINNAH_IMAGE_PATH="D:\\red_buffer\\VS Code\\Jinnah_ChatBot\\image\\Jinnah.jpg"
 # Initialize session
 if "messages" not in st.session_state:
     st.session_state.messages = []
@@ -101,7 +103,7 @@ st.markdown("</div>", unsafe_allow_html=True)
 # Initialize ChromaDB
 try:
     logger.info(f"[CHROMA] Connecting to ChromaDB at: {CHROMA_PATH}")
-    chroma_client = chromadb.PersistentClient(path=CHROMA_PATH)
+    chroma_client = chromadb.PersistentClient(path=str(CHROMA_PATH))
     embedding_model = HuggingFaceEmbeddings(model_name=EMBEDDING_MODEL)
     vector_db = Chroma(
         client=chroma_client,
