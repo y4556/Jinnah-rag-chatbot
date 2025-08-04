@@ -6,6 +6,7 @@ import logging
 # Load .env from project root
 load_dotenv(find_dotenv())
 # --- Environment Variables ---
+JINNAH_IMAGE_PATH = os.getenv("JINNAH_IMAGE_PATH", "image\Jinnah.jpg")
 DATA_DIR          = os.getenv("DATA_DIR")
 EMBEDDING_MODEL   = os.getenv("EMBEDDING_MODEL")
 GROQ_API_KEY      = os.getenv("GROQ_API_KEY")

@@ -7,23 +7,19 @@ import os
 # Initialize logger
 logger = logging.getLogger(__name__)
 
-# 1. Determine root directory (project root)
-ROOT = Path(__file__).resolve().parent.parent.parent
-logger.info(f"Project root: {ROOT}")
 
 # 2. Define all paths relative to root
-JINNAH_IMAGE_PATH = ROOT / "image" / "Jinnah.jpg"
-CHROMA_PATH = ROOT / "chroma_db"
-DATA_DIR = ROOT / "data"
-
+BASE_DIR = Path(__file__).resolve().parent
+JINNAH_IMAGE_PATH = BASE_DIR / "image" / "Jinnah.jpg"
+CHROMA_PATH = BASE_DIR / "chroma_db"
+print(BASE_DIR)
 # 3. Log important paths
-logger.info(f"Jinnah image path: {JINNAH_IMAGE_PATH}")
+logger.info(f"Jinnah image path: {str(JINNAH_IMAGE_PATH)}")
 logger.info(f"ChromaDB path: {CHROMA_PATH}")
-logger.info(f"Data directory: {DATA_DIR}")
 
 # 4. Verify image exists
 if not JINNAH_IMAGE_PATH.exists():
-    logger.error(f"Jinnah image not found at: {JINNAH_IMAGE_PATH}")
+    logger.error(f"Jinnah image not found at: {str(JINNAH_IMAGE_PATH)}")
     # Fallback: Try to find any image in the directory
     image_dir = JINNAH_IMAGE_PATH.parent
     found_image = None

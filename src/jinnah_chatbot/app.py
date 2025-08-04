@@ -10,9 +10,9 @@ from config import  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIE
 from pathlib import Path
 import logging
 
-ROOT = Path(__file__).resolve().parent.parent.parent    
-JINNAH_IMAGE_PATH = ROOT / "image" / "Jinnah.jpg"
-CHROMA_PATH = ROOT / "chroma_db"
+BASE_DIR = Path(__file__).resolve().parent
+JINNAH_IMAGE_PATH = BASE_DIR / "image" / "Jinnah.jpg"
+CHROMA_PATH = BASE_DIR / "chroma_db"
 
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
@@ -71,11 +71,11 @@ st.markdown("""
 with st.sidebar:
     st.title("Quaid-e-Azam Chat")
 
-    logger.info(f"jinnah path is: ", JINNAH_IMAGE_PATH)
+    logger.info(f"jinnah path is: ", str(JINNAH_IMAGE_PATH))
 
-    if os.path.exists(JINNAH_IMAGE_PATH):
+    if os.path.exists(str(JINNAH_IMAGE_PATH)):
         # Read the file as bytes and display
-        with open(JINNAH_IMAGE_PATH, "rb") as f:
+        with open(str(JINNAH_IMAGE_PATH), "rb") as f:
             img_bytes = f.read()
         st.image(
             img_bytes,
@@ -84,7 +84,7 @@ with st.sidebar:
             use_container_width=True,
         )
     else:
-        st.warning(f"Jinnah image not found at:\n{JINNAH_IMAGE_PATH}")
+        st.warning(f"Jinnah image not found at:\n{str(JINNAH_IMAGE_PATH)}")
 
     st.divider()
     st.subheader("System Status")
