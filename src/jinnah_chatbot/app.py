@@ -71,7 +71,7 @@ st.markdown("""
 with st.sidebar:
     st.title("Quaid-e-Azam Chat")
 
-    logger.info(f"jinnah path is: ", str(JINNAH_IMAGE_PATH))
+    logger.info(f"jinnah path is: {JINNAH_IMAGE_PATH}")
 
     if os.path.exists(str(JINNAH_IMAGE_PATH)):
         # Read the file as bytes and display
@@ -110,7 +110,7 @@ try:
         collection_name=COLLECTION_NAME,
         embedding_function=embedding_model
     )
-    logger.info(f"chroma path is: ", CHROMA_PATH)
+    logger.info(f"chroma path is: %s", CHROMA_PATH)
     chroma_status.success("✅ ChromaDB loaded")
     logger.info("[CHROMA] ChromaDB successfully loaded")
 except Exception as e:
