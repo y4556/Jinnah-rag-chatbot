@@ -13,3 +13,4 @@ pillow
 langchain-community
 langchain-openai
 langchain-groq  
+pysqlite3-binary

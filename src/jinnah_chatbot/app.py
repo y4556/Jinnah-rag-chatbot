@@ -10,6 +10,13 @@ from config import  EMBEDDING_MODEL, GROQ_MODEL, TEMPERATURE, MAX_TOKENS, RETRIE
 from pathlib import Path
 import logging
 
+
+# Fix ChromaDB SQLite3 compatibility
+import sys
+if 'pysqlite3' in sys.modules:
+    del sys.modules['pysqlite3']
+sys.modules['sqlite3'] = sys.modules.get('pysqlite3', __import__('pysqlite3'))
+
 BASE_DIR = Path(__file__).resolve().parent
 JINNAH_IMAGE_PATH = BASE_DIR / "image" / "Jinnah.jpg"
 CHROMA_PATH = BASE_DIR / "chroma_db"
